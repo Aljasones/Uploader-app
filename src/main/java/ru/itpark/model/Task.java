@@ -9,13 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Task {
     private int id;
-    private Status status;
     private String phrase;
+    private String sessionId;
+    private Status status;
 }
 
-enum Status {
-    Waiting,
-    Running,
-    Completed,
-    Canceled
-}

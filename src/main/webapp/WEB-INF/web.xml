@@ -17,5 +17,15 @@
         <url-pattern/>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>ru.itpark.servlet.SearchServlet</servlet-class>
+
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

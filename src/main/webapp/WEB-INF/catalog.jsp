@@ -14,14 +14,20 @@
     <div class="row">
         <div class="col">
             <h1>Catalog</h1>
-
             <form action="<%=request.getContextPath()%>" method="post" enctype="multipart/form-data" class="mt-3">
-
                 <div class="custom-file">
                     <input type="file" id="file" name="file" class="custom-file-input" accept="text/plain" required>
                     <label class="custom-file-label" for="file">Choose file...</label>
+                    <button type="submit" class="btn btn-primary mt-3">Upload</button>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Upload</button>
+            </form>
+
+            <form action="<%=request.getContextPath()%>/search" method="get" enctype="multipart/form-data" class="mt-3">
+                <div class="form-group">
+                    <label for="phrase">Search phrase</label>
+                    <input type="text" id="phrase" name="phrase" class="form-control" required>
+                    <button type="submit" class="btn btn-primary mt-3">Search</button>
+                </div>
             </form>
         </div>
     </div>
