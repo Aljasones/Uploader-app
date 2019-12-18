@@ -34,5 +34,7 @@ public class UploadServlet extends HttpServlet {
 
         Part part = req.getPart("file");
         fileService.writeFile(part);
+        resp.sendRedirect("/");
+        
     }
 }

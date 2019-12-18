@@ -13,7 +13,9 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Catalog</h1>
+            <br>
+            <h1 align="center" style="color:Blue">Upload service</h1>
+            <br>
             <form action="<%=request.getContextPath()%>" method="post" enctype="multipart/form-data" class="mt-3">
                 <div class="custom-file">
                     <input type="file" id="file" name="file" class="custom-file-input" accept="text/plain" required>
@@ -21,10 +23,10 @@
                     <button type="submit" class="btn btn-primary mt-3">Upload</button>
                 </div>
             </form>
-
+            <br><br>
             <form action="<%=request.getContextPath()%>/search" method="get" enctype="multipart/form-data" class="mt-3">
                 <div class="form-group">
-                    <label for="phrase">Search phrase</label>
+                    <label for="phrase"><h6 align="left" style="color:Gray">Enter search phrase</h6></label>
                     <input type="text" id="phrase" name="phrase" class="form-control" required>
                     <button type="submit" class="btn btn-primary mt-3">Search</button>
                 </div>

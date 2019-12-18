@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
-    private int id;
+    private String id;
     private String phrase;
     private String sessionId;
     private Status status;
