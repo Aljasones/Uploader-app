@@ -22,4 +22,8 @@ public class TaskService {
         task.setStatus(Status.Waiting);
         taskRepository.createTask(task);
     }
+
+    public void updateTask(){
+
+    }
 }
