@@ -27,14 +27,13 @@ public class SearchServlet extends HttpServlet {
     private FileService fileService;
     TaskService taskService;
     DataSource dataSource;
-    ExecutorService executor = Executors.newFixedThreadPool(5);
     TaskRepository taskRepository;
 
     @Override
     public void init() throws ServletException {
         try {
             InitialContext context = new InitialContext();
-            final DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/db");
+            dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/db");
             taskRepository = new TaskRepository(dataSource);
             taskService = new TaskService(taskRepository);
             fileService = new FileService();
@@ -47,30 +46,7 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String phrase = req.getParameter("phrase");
-
-
-
         taskService.createTask(phrase, req.getSession().getId());
-        TaskWorker taskWorker = new TaskWorker(fileService, phrase);
-        Future<Map<String, List<String>>> resultSearch = executor.submit(taskWorker);
-        try {
-            Map<String, List<String>> result = resultSearch.get();
-
-
-            try (PrintWriter writer = new PrintWriter(new File("" +
-                    "C:\\Programming\\RFC-uploader\\output.txt"))) {
-                for (Map.Entry<String, List<String>> entry : result.entrySet()) {
-                    writer.write( entry.getKey() + ": " + entry.getValue() + "\n");
-                }
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        List<Task> list = taskRepository.selectTask();
-        System.out.println(list.toString());
         resp.sendRedirect("/");
     }
 }

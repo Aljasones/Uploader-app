@@ -11,7 +11,6 @@ import java.util.List;
 public class TaskRepository {
     private final DataSource dataSource;
 
-
     public TaskRepository(DataSource dataSource) {
         this.dataSource = dataSource;
 
@@ -25,8 +24,8 @@ public class TaskRepository {
     }
 
     public void createTask(Task task) {
-        try (Connection connection = dataSource.getConnection()) {
-
+        try {
+            Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO tasks (id, phrase, status, sessionId) VALUES (?,?,?,?)");
 
@@ -42,24 +41,26 @@ public class TaskRepository {
     }
 
     public void updateTask(Task task) {
-        try (Connection connection = dataSource.getConnection()) {
-
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE tasks SET status=? WHERE id=(SELECT id as taskId FROM tasks WHERE sessionid=? AND  status='Waiting')");
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE tasks SET status=? WHERE id=(SELECT id as taskId FROM tasks WHERE sessionid=? AND  status='Waiting')");
             preparedStatement.setString(1, task.getStatus().toString());
             preparedStatement.setString(2, task.getSessionId());
-            int resultId = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Task> selectTask() {
+    public List<Task> getTasksByStatus(Status status) {
+        try {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT *  FROM tasks WHERE status=? LIMIT 10");
+            preparedStatement.setString(1, status.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-        try (
-                Connection connection = dataSource.getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM tasks WHERE status='Waiting' LIMIT 10");
-        ) {
             List<Task> tasks = new ArrayList<>();
             while (resultSet.next()) {
                 Task task = new Task();
@@ -67,10 +68,27 @@ public class TaskRepository {
                 task.setPhrase(resultSet.getString("phrase"));
                 task.setStatus(Status.valueOf(resultSet.getString("status")));
                 task.setSessionId(resultSet.getString("sessionId"));
-
                 tasks.add(task);
             }
             return tasks;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Task> getUpdateTasksStatus(Status status, Status newStatus) {
+        try  {
+            Connection connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+            List<Task> tasksByStatus = getTasksByStatus(status);
+
+            for (Task task : tasksByStatus) {
+                task.setStatus(newStatus);
+                updateTask(task);
+            }
+            connection.commit();
+            return tasksByStatus;
         } catch (SQLException e) {
             e.printStackTrace();
         }
