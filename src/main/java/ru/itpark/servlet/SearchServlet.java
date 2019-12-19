@@ -38,7 +38,7 @@ public class SearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String phrase = req.getParameter("phrase");
         taskService.createTask(phrase, req.getSession().getId());
-        taskService.startTasksToWork();
+
         resp.sendRedirect("/");
     }
 }
