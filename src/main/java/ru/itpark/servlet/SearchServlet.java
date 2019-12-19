@@ -1,7 +1,5 @@
 package ru.itpark.servlet;
 
-import ru.itpark.TaskWorker;
-import ru.itpark.model.Task;
 import ru.itpark.repository.TaskRepository;
 import ru.itpark.service.FileService;
 import ru.itpark.service.TaskService;
@@ -40,6 +38,7 @@ public class SearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String phrase = req.getParameter("phrase");
         taskService.createTask(phrase, req.getSession().getId());
+        taskService.startTasksToWork();
         resp.sendRedirect("/");
     }
 }

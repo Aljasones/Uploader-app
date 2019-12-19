@@ -24,7 +24,7 @@ public class FileRepository {
     private List<String> parseFile(String phrase, File file) throws FileNotFoundException {
         System.out.println("parse file started "+phrase);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

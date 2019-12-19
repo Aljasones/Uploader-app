@@ -43,10 +43,9 @@ public class TaskRepository {
     public void updateTask(Task task) {
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("UPDATE tasks SET status=? WHERE id=(SELECT id as taskId FROM tasks WHERE sessionid=? AND  status='Waiting')");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE tasks set status=? where id=?");
             preparedStatement.setString(1, task.getStatus().toString());
-            preparedStatement.setString(2, task.getSessionId());
+            preparedStatement.setString(2, task.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
