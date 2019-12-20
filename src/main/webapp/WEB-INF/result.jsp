@@ -20,10 +20,7 @@
     <h1 align="center" style="color:Blue">Upload service</h1>
     <br>
 
-
-        <tr>
-
-             <table class="table table-striped">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Searching phrase</th>
@@ -45,10 +42,8 @@
         </tbody>
     </table>
     <% } else response.getWriter().write("Error");%>
-    </tr>
-        </td>
 
-<td>
+</div>
 <div class="container">
     <div class="row">
         <div class="col">
@@ -92,12 +87,7 @@
     </div>
 </div>
 </div>
-</td>
-
-</tr>
-</thead>
 <%@include file="bootstrap-scripts.jsp" %>
 
 </body>
 </html>
-

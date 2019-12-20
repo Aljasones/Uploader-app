@@ -1,5 +1,7 @@
 package ru.itpark.service;
 
+import lombok.extern.slf4j.Slf4j;
+import ru.itpark.enums.RfcPath;
 import ru.itpark.repository.FileRepository;
 
 import javax.servlet.http.Part;
@@ -13,25 +15,24 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class FileService {
-    private final String uploadPath;
+
     private PrintWriter writer;
     private FileRepository fileRepository = new FileRepository();
 
 
     public FileService() throws IOException {
-        uploadPath = System.getenv("UPLOAD_PATH");
-        Files.createDirectories(Paths.get(uploadPath));
     }
 
     public String writeFile(Part part) throws IOException {
         String name = part.getSubmittedFileName();
-        part.write(Paths.get(uploadPath).resolve(name).toString());
+        part.write(Paths.get(RfcPatchService.getInstance().getPath(RfcPath.UPLOAD_PATH)).resolve(name).toString());
         return name;
     }
 
     public Map<String, List<String>> searchByPhrase(String phrase) throws IOException {
+        String uploadPath = RfcPatchService.getInstance().getPath(RfcPath.UPLOAD_PATH);
 
         List<File> fileList = Files.walk(Paths.get(uploadPath))
                 .filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
@@ -39,18 +40,18 @@ public class FileService {
         return fileRepository.parseAllFilesByPhrase(fileList, phrase);
     }
 
-    public void writeResultFile (Map<String, List<String>> result, String phrase) {
+    public void writeResultFile(Map<String, List<String>> result, String phrase) {
+        String tmpPath = RfcPatchService.getInstance().getPath(RfcPath.TMP_PATH);
         try {
-            writer = new PrintWriter(new File("C:\\Programming\\RFC-uploader\\files\\"+phrase+".txt"));
+            writer = new PrintWriter(new File(tmpPath + File.separator + phrase + ".txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         for (Map.Entry<String, List<String>> entry : result.entrySet()) {
-            writer.write(phrase+ " -\n " + entry.getKey() + ": " + entry.getValue() + "\n");
+            writer.write(phrase + " -\n " + entry.getKey() + ": " + entry.getValue() + "\n");
             writer.close();
-            System.out.println(phrase + " written");
+            log.info(phrase + " written");
         }
-
     }
 
 }
