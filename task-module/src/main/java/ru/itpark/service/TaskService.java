@@ -1,6 +1,5 @@
 package ru.itpark.service;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.itpark.TaskWorker;
 import ru.itpark.model.Status;
 import ru.itpark.model.Task;
@@ -11,8 +10,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-@Slf4j
 public class TaskService {
     private TaskRepository taskRepository;
     ExecutorService executor = Executors.newFixedThreadPool(5);

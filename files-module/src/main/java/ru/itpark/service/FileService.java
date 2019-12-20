@@ -1,6 +1,5 @@
 package ru.itpark.service;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.itpark.enums.RfcPath;
 import ru.itpark.repository.FileRepository;
 
@@ -15,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-@Slf4j
+
 public class FileService {
 
     private PrintWriter writer;
@@ -50,7 +49,6 @@ public class FileService {
         for (Map.Entry<String, List<String>> entry : result.entrySet()) {
             writer.write(phrase + " -\n " + entry.getKey() + ": " + entry.getValue() + "\n");
             writer.close();
-            log.info(phrase + " written");
         }
     }
 
