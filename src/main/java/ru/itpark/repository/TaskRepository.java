@@ -3,29 +3,36 @@ package ru.itpark.repository;
 import ru.itpark.model.Status;
 import ru.itpark.model.Task;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository {
-    private final DataSource dataSource;
+    private DataSource dataSource;
 
-    public TaskRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-
+    public TaskRepository() {
+        InitialContext context = null;
         try {
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, phrase TEXT NOT NULL, status TEXT NOT NULL, sessionId TEXT NOT NULL)");
+            context = new InitialContext();
+            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/db");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection conn = dataSource.getConnection()) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute("CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, phrase TEXT NOT NULL, status TEXT NOT NULL, sessionId TEXT NOT NULL)");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void createTask(Task task) {
-        try {
-            Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO tasks (id, phrase, status, sessionId) VALUES (?,?,?,?)");
 
@@ -38,11 +45,12 @@ public class TaskRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     public void updateTask(Task task) {
-        try {
-            Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE tasks set status=? where id=?");
             preparedStatement.setString(1, task.getStatus().toString());
             preparedStatement.setString(2, task.getId());
@@ -53,20 +61,19 @@ public class TaskRepository {
     }
 
     public List<Task> getTasksByStatus(Status status) {
-        try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT *  FROM tasks WHERE status=? LIMIT 10");
-            preparedStatement.setString(1, status.toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = dataSource.getConnection()) {
 
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT *  FROM tasks WHERE status=? LIMIT 5");
+            preparedStatement.setString(1, status.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
             List<Task> tasks = new ArrayList<>();
             while (resultSet.next()) {
                 Task task = new Task();
-                task.setId(resultSet.getString("id"));
-                task.setPhrase(resultSet.getString("phrase"));
+                task.setSessionId(resultSet.getString("sessionid"));
                 task.setStatus(Status.valueOf(resultSet.getString("status")));
-                task.setSessionId(resultSet.getString("sessionId"));
+                task.setPhrase(resultSet.getString("phrase"));
+                task.setId(resultSet.getString("id"));
                 tasks.add(task);
             }
             return tasks;
@@ -74,11 +81,11 @@ public class TaskRepository {
             e.printStackTrace();
         }
         return null;
+
     }
 
     public List<Task> getUpdateTasksStatus(Status status, Status newStatus) {
-        try  {
-            Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             List<Task> tasksByStatus = getTasksByStatus(status);
 
@@ -86,6 +93,7 @@ public class TaskRepository {
                 task.setStatus(newStatus);
                 updateTask(task);
             }
+
             connection.commit();
             return tasksByStatus;
         } catch (SQLException e) {

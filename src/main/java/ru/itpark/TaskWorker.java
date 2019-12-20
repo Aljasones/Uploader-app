@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class TaskWorker implements Runnable {
+public class TaskWorker extends Thread {
     private FileService fileService;
     private Task task;
 

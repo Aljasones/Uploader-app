@@ -17,19 +17,13 @@ import java.io.IOException;
 public class SearchServlet extends HttpServlet {
     private FileService fileService;
     TaskService taskService;
-    DataSource dataSource;
-    TaskRepository taskRepository;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         try {
-            InitialContext context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/db");
-            taskRepository = new TaskRepository(dataSource);
-            taskService = new TaskService(taskRepository);
             fileService = new FileService();
-
-        } catch (NamingException | IOException e) {
+            taskService = new TaskService(new TaskRepository());
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -19,19 +19,14 @@ import java.io.IOException;
 public class UploadServlet extends HttpServlet {
     private FileService fileService;
     TaskService taskService;
-    DataSource dataSource;
-    TaskRepository taskRepository;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         try {
-            InitialContext context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/db");
-            taskRepository = new TaskRepository(dataSource);
-            taskService = new TaskService(taskRepository);
+            taskService = new TaskService(new TaskRepository());
             fileService = new FileService();
 
-        } catch (NamingException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

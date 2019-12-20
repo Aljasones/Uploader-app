@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class FileService {
     private final String uploadPath;
     private PrintWriter writer;
-    private String pathForSavingResult = "C:\\Programming\\RFC-uploader\\output.txt";
+
     private FileRepository fileRepository = new FileRepository();
 
 
@@ -42,7 +42,7 @@ public class FileService {
 
     public void writeResultFile (Map<String, List<String>> result) {
         try {
-            writer = new PrintWriter(new File(pathForSavingResult));
+            writer = new PrintWriter(new File("C:\\Programming\\RFC-uploader\\output.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
