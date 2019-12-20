@@ -1,7 +1,5 @@
 package ru.itpark.servlet;
 
-import ru.itpark.repository.TaskRepository;
-import ru.itpark.service.FileService;
 import ru.itpark.service.TaskService;
 
 import javax.servlet.http.HttpServlet;
@@ -11,17 +9,12 @@ import java.io.IOException;
 
 
 public class SearchServlet extends HttpServlet {
-    private FileService fileService;
     TaskService taskService;
 
     @Override
     public void init() {
-        try {
-            fileService = new FileService();
-            taskService = new TaskService(new TaskRepository());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        taskService = new TaskService();
+
     }
 
     @Override

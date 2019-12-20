@@ -1,6 +1,5 @@
 package ru.itpark.servlet;
 
-import ru.itpark.repository.TaskRepository;
 import ru.itpark.service.FileService;
 import ru.itpark.service.TaskService;
 
@@ -20,9 +19,8 @@ public class UploadServlet extends HttpServlet {
     @Override
     public void init() {
         try {
-            taskService = new TaskService(new TaskRepository());
+            taskService = new TaskService();
             fileService = new FileService();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,7 +28,6 @@ public class UploadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        taskService.startTasksToWork();
         req.getRequestDispatcher("/WEB-INF/catalog.jsp").forward(req, resp);
     }
 

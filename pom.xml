@@ -10,6 +10,7 @@
     <modules>
         <module>files-module</module>
         <module>task-module</module>
+        <module>web-module</module>
     </modules>
     <packaging>pom</packaging>
 
