@@ -32,6 +32,7 @@
                 </div>
             </form>
         </div>
+        <a href="/result">RESULTS</a>
     </div>
 </div>
 <%@ include file="bootstrap-scripts.jsp"%>

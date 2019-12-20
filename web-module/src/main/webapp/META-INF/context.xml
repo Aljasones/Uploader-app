@@ -5,7 +5,7 @@
             auth="container"
             type="javax.sql.DataSource"
             driverClassName="org.sqlite.JDBC"
-            url="jdbc:sqlite:C:/Programming/RFC-uploader/db.sqlite"
+            url="jdbc:sqlite:C:/Programming/RFC-uploader/web-module/db.sqlite"
             closeMethod="close"
     />
     <Resource

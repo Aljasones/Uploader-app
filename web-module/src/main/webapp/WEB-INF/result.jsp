@@ -41,7 +41,7 @@
         <% } %>
         </tbody>
     </table>
-    <% } else response.getWriter().write("Error");%>
+    <% } else response.getWriter().write("Sorry, task list is empty!");%>
 
 </div>
 <div class="container">
@@ -66,21 +66,18 @@
 
                     <div>
 
-                        <form action="<%=file.getName()%>" method="get" enctype="multipart/form-data" class="mt-3">
-                            <button type="submit" name="button" value="download" class="btn btn-primary mt-3">Download</button>
+                        <form action="/result" method="get" enctype="multipart/form-data" class="mt-3">
+                            <button type="submit" name="download" value="<%=file.getName()%>" class="btn btn-primary mt-3">Download</button>
                         </form>
                     </div>
-                    <div>
-                        <a href="C:\\Programming\\RFC-uploader\\files\\<%=file.getName()%>"><h3 class="btn btn-primary">
-                            Download </h3></a>
-                    </div>
+
                     <% } %>
                     <% } %>
 
                 </div>
             </div>
-            <form action="<%=request.getContextPath()%>" method="post" enctype="multipart/form-data" class="mt-3">
-                <button type="submit" name="button" value="clear" class="btn btn-primary mt-3">Clear</button>
+            <form action="/result" method="get" enctype="multipart/form-data" class="mt-3">
+                <button type="submit" name="clearButton" value="clearButton" class="btn btn-primary mt-3">CLEAR</button>
             </form>
 
         </div>
