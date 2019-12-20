@@ -101,4 +101,24 @@ public class TaskRepository {
         }
         return null;
     }
+
+    public List<Task> getStatusForWork() {
+        try (Connection connection = dataSource.getConnection()) {
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT *  FROM tasks ORDER BY id DESC LIMIT 5");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Task> tasks = new ArrayList<>();
+            while (resultSet.next()) {
+                Task task = new Task();
+                task.setStatus(Status.valueOf(resultSet.getString("status")));
+                task.setPhrase(resultSet.getString("phrase"));
+                tasks.add(task);
+            }
+            return tasks;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

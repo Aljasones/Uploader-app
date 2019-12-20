@@ -27,18 +27,25 @@ public class TaskService {
         task.setSessionId(sessionId);
         task.setStatus(Status.Waiting);
         taskRepository.createTask(task);
+        startTasksToWork();
     }
 
     public void startTasksToWork(){
         List<Task> tasksToWork = getListTaskWithUpdatingTasksStatus(Status.Waiting, Status.Running);
         for (Task task : tasksToWork) {
             executor.submit(new TaskWorker(task));
-//            task.setStatus(Status.Completed);
-//            taskRepository.updateTask(task);
         }
     }
 
     public List<Task> getListTaskWithUpdatingTasksStatus(Status status, Status newStatus) {
         return taskRepository.getUpdateTasksStatus(status, newStatus);
+    }
+
+    public void updateTask (Task task) {
+        taskRepository.updateTask(task);
+    }
+
+    public List<Task> getStatusForWork() {
+        return taskRepository.getStatusForWork();
     }
 }

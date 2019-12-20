@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class FileService {
     private final String uploadPath;
     private PrintWriter writer;
-
     private FileRepository fileRepository = new FileRepository();
 
 
@@ -40,15 +39,18 @@ public class FileService {
         return fileRepository.parseAllFilesByPhrase(fileList, phrase);
     }
 
-    public void writeResultFile (Map<String, List<String>> result) {
+    public void writeResultFile (Map<String, List<String>> result, String phrase) {
         try {
-            writer = new PrintWriter(new File("C:\\Programming\\RFC-uploader\\output.txt"));
+            writer = new PrintWriter(new File("C:\\Programming\\RFC-uploader\\files\\"+phrase+".txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         for (Map.Entry<String, List<String>> entry : result.entrySet()) {
-            writer.write(entry.getKey() + ": " + entry.getValue() + "\n");
+            writer.write(phrase+ " -\n " + entry.getKey() + ": " + entry.getValue() + "\n");
+            writer.close();
+            System.out.println(phrase + " written");
         }
+
     }
 
 }
