@@ -2,7 +2,6 @@ package ru.itpark;
 
 import ru.itpark.model.Status;
 import ru.itpark.model.Task;
-import ru.itpark.repository.TaskRepository;
 import ru.itpark.service.FileService;
 import ru.itpark.service.TaskService;
 
@@ -15,12 +14,12 @@ public class TaskWorker extends Thread {
     private FileService fileService;
     private Task task;
     private TaskService taskService;
-    private TaskRepository taskRepository;
+
 
 
     public TaskWorker(Task task) {
         this.task = task;
-        taskService = new TaskService(new TaskRepository());
+        taskService = new TaskService();
         try {
             fileService = new FileService();
         } catch ( IOException e) {
