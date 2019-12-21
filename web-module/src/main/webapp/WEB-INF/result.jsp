@@ -15,11 +15,12 @@
 </head>
 <body>
 <div class="container">
+    <h6 align="right"><a href="/">BACK</a></h6>
 
-    <br>
     <h1 align="center" style="color:Blue">Upload service</h1>
     <br>
 
+    <br>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -82,6 +83,7 @@
 
         </div>
     </div>
+
 </div>
 </div>
 <%@include file="bootstrap-scripts.jsp" %>

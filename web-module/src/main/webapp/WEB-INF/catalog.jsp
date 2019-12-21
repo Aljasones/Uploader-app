@@ -32,7 +32,8 @@
                 </div>
             </form>
         </div>
-        <a href="/result">RESULTS</a>
+
+        <h6 align="right"><a href="/result">RESULTS</a></h6>
     </div>
 </div>
 <%@ include file="bootstrap-scripts.jsp"%>
