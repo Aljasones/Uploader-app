@@ -105,7 +105,7 @@ public class TaskRepository {
     public List<Task> getStatusForWork() {
         try (Connection connection = dataSource.getConnection()) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT *  FROM tasks ORDER BY id DESC LIMIT 5");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT *  FROM tasks ORDER BY id DESC LIMIT 10");
 
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Task> tasks = new ArrayList<>();

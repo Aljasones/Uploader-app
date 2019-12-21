@@ -22,7 +22,8 @@ public class TaskScheduler implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         scheduler = Executors.newScheduledThreadPool(4);
-        scheduler.scheduleAtFixedRate(() ->  taskService.startTasksToWork(), 0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(() -> taskService.startTasksToWork(),0,10, TimeUnit.SECONDS);
+//        scheduler.scheduleAtFixedRate(() ->  taskService.startTasksToWork(), 0, 10, TimeUnit.SECONDS);
     }
 
     @Override
